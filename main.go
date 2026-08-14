@@ -13,10 +13,10 @@ import (
 )
 
 var (
-	stack_group       string // username_scope
-	stack_name        string // jellyfin
-	stack_group_user  string // username
-	stack_group_scope string // scope
+	stackGroup      string // username_scope
+	stackName       string // jellyfin
+	stackGroupUser  string // username
+	stackGroupScope string // scope
 )
 
 //go:embed templates/*
@@ -56,8 +56,8 @@ func getInput() {
 
 	// cli flags
 
-	flag.StringVar(&stack_group, "group", "", "Name of stack group (e.g. '<username>_<scope>')")
-	flag.StringVar(&stack_name, "stack", "", "Name of stack (e.g. 'jellyfin')")
+	flag.StringVar(&stackGroup, "group", "", "Name of stack group (e.g. '<username>_<scope>')")
+	flag.StringVar(&stackName, "stack", "", "Name of stack (e.g. 'jellyfin')")
 	flag.Parse()
 
 }
@@ -65,47 +65,47 @@ func getInput() {
 func validateInput() {
 
 	const (
-		group_flag_error = "error: \033[33m" + "-group" + "\033[0m "
-		stack_flag_error = "error: \033[33m" + "-stack" + "\033[0m "
+		groupFlagError = "error: \033[33m" + "-group" + "\033[0m "
+		stackFlagError = "error: \033[33m" + "-stack" + "\033[0m "
 	)
 
 	// group underscore
 
-	stack_group_parts := strings.Split(stack_group, "_")
+	stackGroupParts := strings.Split(stackGroup, "_")
 
-	if len(stack_group_parts) != 2 {
-		log.Fatal(group_flag_error, "expected one underscore")
+	if len(stackGroupParts) != 2 {
+		log.Fatal(groupFlagError, "expected one underscore")
 	}
 
-	stack_group_user = stack_group_parts[0]
-	stack_group_scope = stack_group_parts[1]
+	stackGroupUser = stackGroupParts[0]
+	stackGroupScope = stackGroupParts[1]
 
 	// alphanumeric & lowercase
 
 	alphanumeric := regexp.MustCompile(`^[a-z0-9]+$`)
 
-	if !alphanumeric.MatchString(stack_group_user) {
-		log.Fatal(group_flag_error, "username (", stack_group_user, ") must only contain lowercase alphanumeric characters")
+	if !alphanumeric.MatchString(stackGroupUser) {
+		log.Fatal(groupFlagError, "username (", stackGroupUser, ") must only contain lowercase alphanumeric characters")
 	}
-	if !alphanumeric.MatchString(stack_group_scope) {
-		log.Fatal(group_flag_error, "scope (", stack_group_scope, ") must only contain lowercase alphanumeric characters")
+	if !alphanumeric.MatchString(stackGroupScope) {
+		log.Fatal(groupFlagError, "scope (", stackGroupScope, ") must only contain lowercase alphanumeric characters")
 	}
-	if !alphanumeric.MatchString(stack_name) {
-		log.Fatal(stack_flag_error, "must only contain lowercase alphanumeric characters")
+	if !alphanumeric.MatchString(stackName) {
+		log.Fatal(stackFlagError, "must only contain lowercase alphanumeric characters")
 	}
 
 	// group scope
 
-	const group_scope_error = group_flag_error + "scope must not use word "
+	const groupScopeError = groupFlagError + "scope must not use word "
 
-	reserved_group_scopes := [10]string{
+	reservedGroupScopes := [10]string{
 		"compose", "docker", "git", "nftables", "ssh",
 		"system", "stacks", "stack", "custom", "karo",
 	}
 
-	for _, scope := range reserved_group_scopes {
-		if strings.Contains(stack_group_scope, scope) {
-			log.Fatal(group_scope_error, scope)
+	for _, scope := range reservedGroupScopes {
+		if strings.Contains(stackGroupScope, scope) {
+			log.Fatal(groupScopeError, scope)
 		}
 	}
 
@@ -114,21 +114,21 @@ func validateInput() {
 func createFiles() {
 
 	const (
-		dir_perm  = 0775
-		file_perm = 0664
+		dirPerm  = 0775
+		filePerm = 0664
 	)
 
 	// directories
 
-	custom_compose_path := filepath.Join("custom", stack_group_user, "karo-compose")
+	customComposePath := filepath.Join("custom", stackGroupUser, "karo-compose")
 
 	directories := [2]string{
-		filepath.Join(custom_compose_path, "defaults", "main", stack_group),
-		filepath.Join(custom_compose_path, "templates", stack_group, stack_name),
+		filepath.Join(customComposePath, "defaults", "main", stackGroup),
+		filepath.Join(customComposePath, "templates", stackGroup, stackName),
 	}
 
 	for _, dir := range directories {
-		err := os.MkdirAll(dir, dir_perm)
+		err := os.MkdirAll(dir, dirPerm)
 		check(err)
 	}
 
@@ -143,7 +143,7 @@ func createFiles() {
 			template: "templates/main.yml.tmpl",
 		},
 		{
-			path:     filepath.Join(directories[0], stack_name+".yml"),
+			path:     filepath.Join(directories[0], stackName+".yml"),
 			template: "templates/stack.yml.tmpl",
 		},
 		{
@@ -154,7 +154,7 @@ func createFiles() {
 
 	for _, file := range files {
 		// create file
-		f, err := os.OpenFile(file.path, os.O_CREATE|os.O_WRONLY, file_perm)
+		f, err := os.OpenFile(file.path, os.O_CREATE|os.O_WRONLY, filePerm)
 		check(err)
 
 		// check file size
@@ -170,8 +170,8 @@ func createFiles() {
 				StackGroup string
 				StackName  string
 			}{
-				StackGroup: stack_group,
-				StackName:  stack_name,
+				StackGroup: stackGroup,
+				StackName:  stackName,
 			})
 			check(err)
 		}
