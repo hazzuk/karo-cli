@@ -65,15 +65,15 @@ func validateInput() {
 
 	// alphanumeric & lowercase
 
-	rx := regexp.MustCompile("^[a-z0-9]+$")
+	alphanumeric := regexp.MustCompile(`^[a-z0-9]+$`)
 
-	if !rx.MatchString(stack_group_user) {
+	if !alphanumeric.MatchString(stack_group_user) {
 		log.Fatal(group_flag_error, "username (", stack_group_user, ") must only contain lowercase alphanumeric characters")
 	}
-	if !rx.MatchString(stack_group_scope) {
+	if !alphanumeric.MatchString(stack_group_scope) {
 		log.Fatal(group_flag_error, "scope (", stack_group_scope, ") must only contain lowercase alphanumeric characters")
 	}
-	if !rx.MatchString(stack_name) {
+	if !alphanumeric.MatchString(stack_name) {
 		log.Fatal(stack_flag_error, "must only contain lowercase alphanumeric characters")
 	}
 
