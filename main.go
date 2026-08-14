@@ -19,19 +19,13 @@ var (
 
 func main() {
 
-	// check custom dir exists?
-	// is git directory?
 
 	getInput()
 
 	validateInput()
 
+
 	createFiles()
-
-	// debug
-
-	fmt.Println(stack_group)
-	fmt.Println(stack_name)
 
 }
 
