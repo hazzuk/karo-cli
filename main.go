@@ -14,6 +14,7 @@ import (
 	"regexp"
 	"strings"
 	"text/template"
+	"time"
 )
 
 //go:embed templates/*
@@ -164,13 +165,19 @@ func createFiles() {
 			tmpl, err := template.ParseFS(templates, file.template)
 			check(err)
 
-			err = tmpl.Execute(f, struct {
-				StackGroup string
-				StackName  string
+			data := struct {
+				StackGroup     string
+				StackGroupUser string
+				StackName      string
+				Year           int
 			}{
-				StackGroup: stackGroup,
-				StackName:  stackName,
-			})
+				StackGroup:     stackGroup,
+				StackGroupUser: stackGroupUser,
+				StackName:      stackName,
+				Year:           time.Now().Year(),
+			}
+
+			err = tmpl.Execute(f, data)
 			check(err)
 		}
 

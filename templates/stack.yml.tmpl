@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: © {{ .Year }} {{ .StackGroupUser }}
+#
+# SPDX-License-Identifier: NOASSERTION
+
+---
+
+{{ .StackGroup }}_{{ .StackName }}_enabled: false
+
+{{ .StackGroup }}_{{ .StackName }}_stack_defaults:
+  {{ .StackName }}:
+    image: docker.io/<org>/<image> # or ghcr.io/<org>/<image>
+    version: v1.0.0@sha256:0afa9d9a1b780339772946ac0dfd4b98e5e56b34a117cac353985be7a6a50ac7
+    domain: "{{ .StackName }}.{{ "{{" }} karo_compose_root_domain {{ "}}" }}"
+    log_level: info # debug, info, warn, error

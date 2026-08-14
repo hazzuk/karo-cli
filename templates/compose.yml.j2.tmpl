@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: © {{ .Year }} {{ .StackGroupUser }}
+#
+# SPDX-License-Identifier: NOASSERTION
+
+---
+
+name: {{ .StackName }}
+services:
+
+  {{ .StackName }}:
+    image: {{ "{{" }} stack_vars.{{ .StackName }}.image {{ "}}" }}:{{ "{{" }} stack_vars.{{ .StackName }}.version {{ "}}" }}
+    container_name: {{ .StackName }}
+    restart: {{ "{{" }} karo_compose_restart_policy {{ "}}" }}
+    networks:
+      - frontend
+    volumes:
+      - type: volume
+        source: {{ .StackName }}_data
+        target: /app/example/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.{{ .StackName }}.rule=Host(`{{ "{{" }} stack_vars.{{ .StackName }}.domain {{ "}}" }}`)
+      - traefik.http.services.{{ .StackName }}.loadbalancer.server.port=8080
+    environment:
+      - LOG_LEVEL={{ "{{" }} stack_vars.{{ .StackName }}.log_level {{ "}}" }}
+
+networks:
+  frontend:
+    external: true
+
+volumes:
+  {{ .StackName }}_data:
+    name: {{ .StackName }}_data
