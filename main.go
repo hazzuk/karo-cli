@@ -139,6 +139,7 @@ func createFiles() {
 		f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, file_perm)
 		check(err)
 		f.Close()
+		fmt.Println("Created:", filename)
 	}
 
 }
