@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"fmt"
 	"log"
@@ -8,6 +9,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"text/template"
 )
 
 var (
@@ -16,6 +18,9 @@ var (
 	stack_group_user  string // username
 	stack_group_scope string // scope
 )
+
+//go:embed templates/*
+var templates embed.FS
 
 func main() {
 
@@ -129,17 +134,50 @@ func createFiles() {
 
 	// files
 
-	files := [3]string{
-		filepath.Join(directories[0], "main.yml"),
-		filepath.Join(directories[0], stack_name+".yml"),
-		filepath.Join(directories[1], "compose.yml.j2"),
+	files := [3]struct {
+		path     string
+		template string
+	}{
+		{
+			path:     filepath.Join(directories[0], "main.yml"),
+			template: "templates/main.yml.tmpl",
+		},
+		{
+			path:     filepath.Join(directories[0], stack_name+".yml"),
+			template: "templates/stack.yml.tmpl",
+		},
+		{
+			path:     filepath.Join(directories[1], "compose.yml.j2"),
+			template: "templates/compose.yml.j2.tmpl",
+		},
 	}
 
-	for _, filename := range files {
-		f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, file_perm)
+	for _, file := range files {
+		// create file
+		f, err := os.OpenFile(file.path, os.O_CREATE|os.O_WRONLY, file_perm)
 		check(err)
+
+		// check file size
+		info, err := f.Stat()
+		check(err)
+
+		if info.Size() == 0 {
+			// template empty file
+			tmpl, err := template.ParseFS(templates, file.template)
+			check(err)
+
+			err = tmpl.Execute(f, struct {
+				StackGroup string
+				StackName  string
+			}{
+				StackGroup: stack_group,
+				StackName:  stack_name,
+			})
+			check(err)
+		}
+
 		f.Close()
-		fmt.Println("Created:", filename)
+		fmt.Println("Created:", file.path)
 	}
 
 }
