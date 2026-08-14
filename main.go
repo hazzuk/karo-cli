@@ -19,6 +19,7 @@ var (
 
 func main() {
 
+	assertCustomDir()
 
 	getInput()
 
@@ -26,6 +27,23 @@ func main() {
 
 
 	createFiles()
+
+}
+
+func assertCustomDir() {
+
+	path, err := os.Getwd()
+	check(err)
+	files, err := os.ReadDir(path)
+	check(err)
+
+	for _, file := range files {
+		if file.Name() == "custom" {
+			return
+		}
+	}
+
+	log.Fatal("error: unable to find custom directory")
 
 }
 
