@@ -12,6 +12,9 @@ import (
 	"text/template"
 )
 
+//go:embed templates/*
+var templates embed.FS
+
 var (
 	stackGroup      string // username_scope
 	stackName       string // jellyfin
@@ -19,29 +22,24 @@ var (
 	stackGroupScope string // scope
 )
 
-//go:embed templates/*
-var templates embed.FS
-
 func main() {
 
 	assertCustomDir()
-
 	getInput()
-
 	validateInput()
-
-
 	createFiles()
 
 }
 
 func assertCustomDir() {
 
+	// read current working directory
 	path, err := os.Getwd()
 	check(err)
 	files, err := os.ReadDir(path)
 	check(err)
 
+	// find custom directory
 	for _, file := range files {
 		if file.Name() == "custom" {
 			return
@@ -54,8 +52,7 @@ func assertCustomDir() {
 
 func getInput() {
 
-	// cli flags
-
+	// parse cli flags
 	flag.StringVar(&stackGroup, "group", "", "Name of stack group (e.g. '<username>_<scope>')")
 	flag.StringVar(&stackName, "stack", "", "Name of stack (e.g. 'jellyfin')")
 	flag.Parse()
@@ -69,10 +66,10 @@ func validateInput() {
 		stackFlagError = "error: \033[33m" + "-stack" + "\033[0m "
 	)
 
-	// group underscore
-
+	// split stack group
 	stackGroupParts := strings.Split(stackGroup, "_")
 
+	// validate underscores
 	if len(stackGroupParts) != 2 {
 		log.Fatal(groupFlagError, "expected one underscore")
 	}
@@ -80,8 +77,7 @@ func validateInput() {
 	stackGroupUser = stackGroupParts[0]
 	stackGroupScope = stackGroupParts[1]
 
-	// alphanumeric & lowercase
-
+	// validate alphanumeric & lowercase
 	alphanumeric := regexp.MustCompile(`^[a-z0-9]+$`)
 
 	if !alphanumeric.MatchString(stackGroupUser) {
@@ -94,8 +90,7 @@ func validateInput() {
 		log.Fatal(stackFlagError, "must only contain lowercase alphanumeric characters")
 	}
 
-	// group scope
-
+	// validate group scope
 	const groupScopeError = groupFlagError + "scope must not use word "
 
 	reservedGroupScopes := [10]string{
@@ -119,7 +114,6 @@ func createFiles() {
 	)
 
 	// directories
-
 	customComposePath := filepath.Join("custom", stackGroupUser, "karo-compose")
 
 	directories := [2]string{
@@ -127,13 +121,13 @@ func createFiles() {
 		filepath.Join(customComposePath, "templates", stackGroup, stackName),
 	}
 
+	// create directories
 	for _, dir := range directories {
 		err := os.MkdirAll(dir, dirPerm)
 		check(err)
 	}
 
 	// files
-
 	files := [3]struct {
 		path     string
 		template string
