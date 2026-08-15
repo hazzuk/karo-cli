@@ -52,7 +52,7 @@ func assertCustomRepo() {
 		return
 	}
 
-	fmt.Println("warn: current directory ("+dirName+") has an unexpected name, \n",
+	fmt.Println("warn: current directory ("+dirName+") has an unexpected name,",
 		"expected 'karo-custom' or '"+stackGroupUser+"'")
 
 	// read working directory files
@@ -66,7 +66,7 @@ func assertCustomRepo() {
 		}
 	}
 
-	log.Fatal("error: not inside a karo-custom repo, \n",
+	log.Fatal("error: not inside a karo-custom repo,",
 		"create a ./karo-compose directory to override this")
 
 }
