@@ -193,10 +193,15 @@ func createFiles() {
 
 			err = tmpl.Execute(f, data)
 			check(err)
+
+			fmt.Println("info: created", file.path)
+
+		} else if file.path == files[0].path {
+			// main.yml already exists
+			fmt.Println("warn: unable to edit pre-existing main.yml defaults file")
 		}
 
 		f.Close()
-		fmt.Println("created:", file.path)
 	}
 
 }
