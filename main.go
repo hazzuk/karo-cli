@@ -135,11 +135,9 @@ func createFiles() {
 	)
 
 	// directories
-	customComposePath := filepath.Join("custom", stackGroupUser, "karo-compose")
-
 	directories := [2]string{
-		filepath.Join(customComposePath, "defaults", "main", stackGroup),
-		filepath.Join(customComposePath, "templates", stackGroup, stackName),
+		filepath.Join("karo-compose", "defaults", "main", stackGroup),
+		filepath.Join("karo-compose", "templates", stackGroup, stackName),
 	}
 
 	// create directories
@@ -198,7 +196,7 @@ func createFiles() {
 		}
 
 		f.Close()
-		fmt.Println("Created:", file.path)
+		fmt.Println("created:", file.path)
 	}
 
 }
