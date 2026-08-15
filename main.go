@@ -29,29 +29,45 @@ var (
 
 func main() {
 
-	assertCustomDir()
 	getInput()
 	validateInput()
+	assertCustomRepo()
 	createFiles()
 
 }
 
-func assertCustomDir() {
+func assertCustomRepo() {
 
-	// read current working directory
+	// get working directory path
 	path, err := os.Getwd()
 	check(err)
+
+	dirName := filepath.Base(path)
+
+	// check working directory name
+	switch dirName {
+	case "karo-custom":
+		return
+	case stackGroupUser:
+		return
+	}
+
+	fmt.Println("warn: current directory ("+dirName+") has an unexpected name, \n",
+		"expected 'karo-custom' or '"+stackGroupUser+"'")
+
+	// read working directory files
 	files, err := os.ReadDir(path)
 	check(err)
 
-	// find custom directory
+	// find karo-compose directory
 	for _, file := range files {
-		if file.Name() == "custom" {
+		if file.Name() == "karo-compose" {
 			return
 		}
 	}
 
-	log.Fatal("error: unable to find custom directory")
+	log.Fatal("error: not inside a karo-custom repo, \n",
+		"create a ./karo-compose directory to override this")
 
 }
 
