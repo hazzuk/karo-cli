@@ -150,6 +150,26 @@ func createFiles() {
 		filepath.Join("karo-compose", "templates", stackGroup, stackName),
 	}
 
+	// validate against existing stack group dirs
+	groupDirs, err := os.ReadDir(filepath.Join("karo-compose", "templates"))
+	check(err)
+
+	for _, dir := range groupDirs {
+		if dir.IsDir() {
+			// split existing stack group username
+			dirParts := strings.Split(dir.Name(), "_")
+
+			// compare usernames
+			if stackGroupUser != dirParts[0] {
+				log.Fatalf(
+					"error: found mismatched stack groups (%s/%s)",
+					stackGroupUser,
+					dirParts[0],
+				)
+			}
+		}
+	}
+
 	// create directories
 	for _, dir := range directories {
 		err := os.MkdirAll(dir, dirPerm)
