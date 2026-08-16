@@ -1,3 +1,13 @@
 {
-    "cSpell.enabled": false
+    "cSpell.enabled": true,
+    "cSpell.words": [
+        "GOARCH",
+        "GOOS",
+        "jellyfin",
+        "karo",
+        "nftables",
+        "NOASSERTION",
+        "tmpl",
+        "vars"
+    ]
 }
