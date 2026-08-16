@@ -23,6 +23,7 @@ var templates embed.FS
 var (
 	stackGroup      string // username_scope
 	stackName       string // jellyfin
+	stackLicense    string // AGPL-3.0-only
 	stackGroupUser  string // username
 	stackGroupScope string // scope
 )
@@ -76,6 +77,7 @@ func getInput() {
 	// parse cli flags
 	flag.StringVar(&stackGroup, "group", "", "Name of stack group (e.g. '<username>_<scope>')")
 	flag.StringVar(&stackName, "stack", "", "Name of stack (e.g. 'jellyfin')")
+	flag.StringVar(&stackLicense, "license", "NOASSERTION", "Optional, SPDX license identifier (e.g. 'AGPL-3.0-only')")
 	flag.Parse()
 
 }
@@ -184,11 +186,13 @@ func createFiles() {
 				StackGroupUser string
 				StackName      string
 				Year           int
+				StackLicense   string
 			}{
 				StackGroup:     stackGroup,
 				StackGroupUser: stackGroupUser,
 				StackName:      stackName,
 				Year:           time.Now().Year(),
+				StackLicense:   stackLicense,
 			}
 
 			err = tmpl.Execute(f, data)
