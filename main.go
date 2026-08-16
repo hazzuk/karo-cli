@@ -58,21 +58,15 @@ func assertCustomRepo() {
 		dirName, stackGroupUser,
 	)
 
-	// read working directory files
-	files, err := os.ReadDir(path)
-	check(err)
-
-	// find karo-compose directory
-	for _, file := range files {
-		if file.Name() == "karo-compose" {
-			return
-		}
+	// check karo-compose dir exists
+	if stat, err := os.Stat("karo-compose"); err == nil && stat.IsDir() {
+		return
+	} else {
+		log.Fatal(
+			"error: running from non-standard custom repo, ",
+			"create ./karo-compose directory to override this",
+		)
 	}
-
-	log.Fatal(
-		"error: running from non-standard karo-custom repo, ",
-		"create ./karo-compose directory to override this",
-	)
 
 }
 
