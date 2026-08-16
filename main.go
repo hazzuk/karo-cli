@@ -53,8 +53,10 @@ func assertCustomRepo() {
 		return
 	}
 
-	fmt.Println("warn: current directory ("+dirName+") has an unexpected name,",
-		"expected 'karo-custom' or '"+stackGroupUser+"'")
+	fmt.Printf(
+		"warn: non-standard name for current directory (%s), expected 'karo-custom' or '%s'\n",
+		dirName, stackGroupUser,
+	)
 
 	// read working directory files
 	files, err := os.ReadDir(path)
@@ -67,8 +69,10 @@ func assertCustomRepo() {
 		}
 	}
 
-	log.Fatal("error: not inside a karo-custom repo,",
-		"create a ./karo-compose directory to override this")
+	log.Fatal(
+		"error: running from non-standard karo-custom repo, ",
+		"create ./karo-compose directory to override this",
+	)
 
 }
 
@@ -85,16 +89,18 @@ func getInput() {
 func validateInput() {
 
 	const (
-		groupFlagError = "error: \033[33m" + "-group" + "\033[0m "
-		stackFlagError = "error: \033[33m" + "-stack" + "\033[0m "
+		groupFlagError    = "error: \033[33m" + "-group" + "\033[0m"
+		stackFlagError    = "error: \033[33m" + "-stack" + "\033[0m"
+		requiredError     = "is required, see -help"
+		alphanumericError = "must only use lowercase alphanumeric characters"
 	)
 
 	// stack group/name required
 	if stackGroup == "" {
-		log.Fatal(groupFlagError, "is required, see -help")
+		log.Fatalf("%s %s", groupFlagError, requiredError)
 	}
 	if stackName == "" {
-		log.Fatal(stackFlagError, "is required, see -help")
+		log.Fatalf("%s %s", stackFlagError, requiredError)
 	}
 
 	// split stack group
@@ -102,7 +108,10 @@ func validateInput() {
 
 	// validate underscores
 	if len(stackGroupParts) != 2 {
-		log.Fatal(groupFlagError, "expected one underscore")
+		log.Fatalf(
+			"%s expected one underscore",
+			groupFlagError,
+		)
 	}
 
 	stackGroupUser = stackGroupParts[0]
@@ -112,18 +121,22 @@ func validateInput() {
 	alphanumeric := regexp.MustCompile(`^[a-z0-9]+$`)
 
 	if !alphanumeric.MatchString(stackGroupUser) {
-		log.Fatal(groupFlagError, "username (", stackGroupUser, ") must only contain lowercase alphanumeric characters")
+		log.Fatalf(
+			"%s username (%s) %s",
+			groupFlagError, stackGroupUser, alphanumericError,
+		)
 	}
 	if !alphanumeric.MatchString(stackGroupScope) {
-		log.Fatal(groupFlagError, "scope (", stackGroupScope, ") must only contain lowercase alphanumeric characters")
+		log.Fatalf(
+			"%s scope (%s) %s",
+			groupFlagError, stackGroupScope, alphanumericError,
+		)
 	}
 	if !alphanumeric.MatchString(stackName) {
-		log.Fatal(stackFlagError, "must only contain lowercase alphanumeric characters")
+		log.Fatalf("%s %s", stackFlagError, alphanumericError)
 	}
 
 	// validate group scope
-	const groupScopeError = groupFlagError + "scope must not use word "
-
 	reservedGroupScopes := [10]string{
 		"compose", "docker", "git", "nftables", "ssh",
 		"system", "stacks", "stack", "custom", "karo",
@@ -131,7 +144,10 @@ func validateInput() {
 
 	for _, scope := range reservedGroupScopes {
 		if strings.Contains(stackGroupScope, scope) {
-			log.Fatal(groupScopeError, scope)
+			log.Fatalf(
+				"%s scope must not use word '%s'",
+				groupFlagError, scope,
+			)
 		}
 	}
 
@@ -163,8 +179,7 @@ func createFiles() {
 			if stackGroupUser != dirParts[0] {
 				log.Fatalf(
 					"error: found mismatched stack groups (%s/%s)",
-					stackGroupUser,
-					dirParts[0],
+					stackGroupUser, dirParts[0],
 				)
 			}
 		}
@@ -250,7 +265,10 @@ func editStackGroup(path string, filePerm os.FileMode) {
 
 	// check for valid stack group dictionary
 	if !strings.Contains(content, stackGroupDict) {
-		log.Fatal("error: unable to find valid stack group dictionary (", stackGroupDict, ") in ", path)
+		log.Fatalf(
+			"error: unable to find valid stack group dictionary (%s) in %s",
+			stackGroupDict, path,
+		)
 	}
 
 	// check for existing stack entry
@@ -277,7 +295,7 @@ func editStackGroup(path string, filePerm os.FileMode) {
 func check(err error) {
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("unexpected error: ", err)
 	}
 
 }
