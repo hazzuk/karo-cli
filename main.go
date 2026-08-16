@@ -130,8 +130,8 @@ func validateInput() {
 func createFiles() {
 
 	const (
-		dirPerm  = 0775
-		filePerm = 0664
+		dirPerm  os.FileMode = 0775
+		filePerm os.FileMode = 0664
 	)
 
 	// directories
@@ -194,15 +194,51 @@ func createFiles() {
 			err = tmpl.Execute(f, data)
 			check(err)
 
+			f.Close()
 			fmt.Println("info: created", file.path)
 
 		} else if file.path == files[0].path {
-			// main.yml already exists
-			fmt.Println("warn: unable to edit pre-existing main.yml defaults file")
+			f.Close()
+			// edit existing main.yml file
+			editStackGroup(file.path, filePerm)
 		}
-
-		f.Close()
 	}
+
+}
+
+func editStackGroup(path string, filePerm os.FileMode) {
+
+	// read main.yml file
+	raw, err := os.ReadFile(path)
+	check(err)
+
+	content := string(raw)
+
+	stackGroupDict := stackGroup + "_stacks:"
+
+	// check for valid stack group dictionary
+	if !strings.Contains(content, stackGroupDict) {
+		log.Fatal("error: unable to find valid stack group dictionary (", stackGroupDict, ") in ", path)
+	}
+
+	// check for existing stack entry
+	if strings.Contains(content, "- "+stackName+"\n") {
+		return
+	}
+
+	// replace content with new stack entry
+	content = strings.Replace(
+		content,
+		stackGroupDict,
+		stackGroupDict+"\n  # - "+stackName,
+		1,
+	)
+
+	// write modified content to file
+	err = os.WriteFile(path, []byte(content), filePerm)
+	check(err)
+
+	fmt.Println("info: edited", path)
 
 }
 
