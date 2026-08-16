@@ -89,6 +89,14 @@ func validateInput() {
 		stackFlagError = "error: \033[33m" + "-stack" + "\033[0m "
 	)
 
+	// stack group/name required
+	if stackGroup == "" {
+		log.Fatal(groupFlagError, "is required, see -help")
+	}
+	if stackName == "" {
+		log.Fatal(stackFlagError, "is required, see -help")
+	}
+
 	// split stack group
 	stackGroupParts := strings.Split(stackGroup, "_")
 
