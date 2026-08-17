@@ -72,11 +72,37 @@ func assertCustomRepo() {
 
 func getInput() {
 
-	// parse cli flags
-	flag.StringVar(&stackGroup, "group", "", "Name of stack group (e.g. '<username>_<scope>')")
-	flag.StringVar(&stackName, "stack", "", "Name of stack (e.g. 'jellyfin')")
-	flag.StringVar(&stackLicense, "license", "NOASSERTION", "Optional, SPDX license identifier (e.g. 'AGPL-3.0-only')")
-	flag.Parse()
+	usageMsg :=
+		"Usage:  karo <command>\n\n" +
+			"Commands:\n" +
+			"  compose add    Create a custom stack for karo-compose\n"
+
+	// create subcommand
+	composeAddCmd := flag.NewFlagSet("compose add", flag.ExitOnError)
+
+	// set flags
+	composeAddCmd.StringVar(&stackGroup, "group", "", "Name of stack group (e.g. '<username>_<scope>')")
+	composeAddCmd.StringVar(&stackName, "stack", "", "Name of stack (e.g. 'jellyfin')")
+	composeAddCmd.StringVar(&stackLicense, "license", "NOASSERTION", "Optional, SPDX license identifier (e.g. 'AGPL-3.0-only')")
+
+	// check args provided
+	if len(os.Args) < 3 {
+		fmt.Println(usageMsg)
+		os.Exit(1)
+	}
+
+	// parse flags for subcommands
+	switch os.Args[1] {
+	case "compose":
+		switch os.Args[2] {
+		case "add":
+			composeAddCmd.Parse(os.Args[3:])
+			return
+		}
+	}
+
+	fmt.Println(usageMsg)
+	os.Exit(1)
 
 }
 
