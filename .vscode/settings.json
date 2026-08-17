@@ -8,6 +8,7 @@
         "karo",
         "nftables",
         "NOASSERTION",
+        "pipefail",
         "tmpl",
         "vars"
     ]
