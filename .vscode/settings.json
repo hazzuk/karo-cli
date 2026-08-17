@@ -4,6 +4,7 @@
         "GOARCH",
         "GOOS",
         "jellyfin",
+        "justfile",
         "karo",
         "nftables",
         "NOASSERTION",
