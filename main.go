@@ -51,6 +51,8 @@ func assertCustomRepo() {
 		return
 	case stackGroupUser:
 		return
+	case "karo-cli":
+		return
 	}
 
 	fmt.Printf(
