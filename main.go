@@ -135,19 +135,19 @@ func getInput() {
 func validateInput() {
 
 	const (
-		groupFlagError    = "error: \033[33m" + "-group" + "\033[0m"
-		stackFlagError    = "error: \033[33m" + "-stack" + "\033[0m"
+		groupArgError     = "error: \033[33m" + "group" + "\033[0m"
+		stackArgError     = "error: \033[33m" + "stack" + "\033[0m name"
 		requiredError     = "is required, see -help"
 		alphanumericError = "must only use lowercase alphanumeric characters"
 	)
 
 	// stack group/name required
 	if stackGroup == "" {
-		fmt.Printf("%s %s\n", groupFlagError, requiredError)
+		fmt.Printf("%s %s\n", groupArgError, requiredError)
 		os.Exit(1)
 	}
 	if stackName == "" {
-		fmt.Printf("%s %s\n", stackFlagError, requiredError)
+		fmt.Printf("%s %s\n", stackArgError, requiredError)
 		os.Exit(1)
 	}
 
@@ -157,8 +157,9 @@ func validateInput() {
 	// validate underscores
 	if len(stackGroupParts) != 2 {
 		fmt.Printf(
-			"%s expected one underscore\n",
-			groupFlagError,
+			"%s name expected 1 underscore, found %s\n",
+			groupArgError,
+			fmt.Sprint(len(stackGroupParts)-1),
 		)
 		os.Exit(1)
 	}
@@ -172,19 +173,19 @@ func validateInput() {
 	if !alphanumeric.MatchString(stackGroupUser) {
 		fmt.Printf(
 			"%s username (%s) %s\n",
-			groupFlagError, stackGroupUser, alphanumericError,
+			groupArgError, stackGroupUser, alphanumericError,
 		)
 		os.Exit(1)
 	}
 	if !alphanumeric.MatchString(stackGroupScope) {
 		fmt.Printf(
 			"%s scope (%s) %s\n",
-			groupFlagError, stackGroupScope, alphanumericError,
+			groupArgError, stackGroupScope, alphanumericError,
 		)
 		os.Exit(1)
 	}
 	if !alphanumeric.MatchString(stackName) {
-		fmt.Printf("%s %s\n", stackFlagError, alphanumericError)
+		fmt.Printf("%s %s\n", stackArgError, alphanumericError)
 		os.Exit(1)
 	}
 
@@ -198,7 +199,7 @@ func validateInput() {
 		if strings.Contains(stackGroupScope, scope) {
 			fmt.Printf(
 				"%s scope must not use word '%s'\n",
-				groupFlagError, scope,
+				groupArgError, scope,
 			)
 			os.Exit(1)
 		}
