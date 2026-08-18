@@ -3,9 +3,11 @@
     "cSpell.words": [
         "GOARCH",
         "GOOS",
+        "immich",
         "jellyfin",
         "justfile",
         "karo",
+        "mosslocker",
         "nftables",
         "NOASSERTION",
         "pipefail",
