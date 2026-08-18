@@ -8,7 +8,6 @@ import (
 	"embed"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -64,10 +63,11 @@ func assertCustomRepo() {
 	if stat, err := os.Stat("karo-compose"); err == nil && stat.IsDir() {
 		return
 	} else {
-		log.Fatal(
+		fmt.Println(
 			"error: running from non-standard custom repo, ",
 			"create ./karo-compose directory to override this",
 		)
+		os.Exit(1)
 	}
 
 }
@@ -119,10 +119,12 @@ func validateInput() {
 
 	// stack group/name required
 	if stackGroup == "" {
-		log.Fatalf("%s %s", groupFlagError, requiredError)
+		fmt.Printf("%s %s\n", groupFlagError, requiredError)
+		os.Exit(1)
 	}
 	if stackName == "" {
-		log.Fatalf("%s %s", stackFlagError, requiredError)
+		fmt.Printf("%s %s\n", stackFlagError, requiredError)
+		os.Exit(1)
 	}
 
 	// split stack group
@@ -130,10 +132,11 @@ func validateInput() {
 
 	// validate underscores
 	if len(stackGroupParts) != 2 {
-		log.Fatalf(
-			"%s expected one underscore",
+		fmt.Printf(
+			"%s expected one underscore\n",
 			groupFlagError,
 		)
+		os.Exit(1)
 	}
 
 	stackGroupUser = stackGroupParts[0]
@@ -143,19 +146,22 @@ func validateInput() {
 	alphanumeric := regexp.MustCompile(`^[a-z0-9]+$`)
 
 	if !alphanumeric.MatchString(stackGroupUser) {
-		log.Fatalf(
-			"%s username (%s) %s",
+		fmt.Printf(
+			"%s username (%s) %s\n",
 			groupFlagError, stackGroupUser, alphanumericError,
 		)
+		os.Exit(1)
 	}
 	if !alphanumeric.MatchString(stackGroupScope) {
-		log.Fatalf(
-			"%s scope (%s) %s",
+		fmt.Printf(
+			"%s scope (%s) %s\n",
 			groupFlagError, stackGroupScope, alphanumericError,
 		)
+		os.Exit(1)
 	}
 	if !alphanumeric.MatchString(stackName) {
-		log.Fatalf("%s %s", stackFlagError, alphanumericError)
+		fmt.Printf("%s %s\n", stackFlagError, alphanumericError)
+		os.Exit(1)
 	}
 
 	// validate group scope
@@ -166,10 +172,11 @@ func validateInput() {
 
 	for _, scope := range reservedGroupScopes {
 		if strings.Contains(stackGroupScope, scope) {
-			log.Fatalf(
-				"%s scope must not use word '%s'",
+			fmt.Printf(
+				"%s scope must not use word '%s'\n",
 				groupFlagError, scope,
 			)
+			os.Exit(1)
 		}
 	}
 
@@ -205,10 +212,11 @@ func createFiles() {
 
 				// ensure stack group usernames match
 				if stackGroupUser != dirParts[0] {
-					log.Fatalf(
-						"error: found mismatched stack groups (%s/%s)",
+					fmt.Printf(
+						"error: found mismatched stack groups (%s/%s)\n",
 						stackGroupUser, dirParts[0],
 					)
+					os.Exit(1)
 				}
 			}
 		}
@@ -294,10 +302,11 @@ func editStackGroup(path string, filePerm os.FileMode) {
 
 	// check for valid stack group dictionary
 	if !strings.Contains(content, stackGroupDict) {
-		log.Fatalf(
-			"error: unable to find valid stack group dictionary (%s) in %s",
+		fmt.Printf(
+			"error: unable to find valid stack group dictionary (%s) in %s\n",
 			stackGroupDict, path,
 		)
+		os.Exit(1)
 	}
 
 	// check for existing stack entry
@@ -324,7 +333,8 @@ func editStackGroup(path string, filePerm os.FileMode) {
 func check(err error) {
 
 	if err != nil {
-		log.Fatal("unexpected error: ", err)
+		fmt.Println("unexpected error: ", err)
+		os.Exit(1)
 	}
 
 }
