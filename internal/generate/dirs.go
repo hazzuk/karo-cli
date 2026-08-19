@@ -14,18 +14,7 @@ import (
 	"github.com/hazzuk/karo-cli/internal/utils"
 )
 
-func CreateDirs(cfg *config.Config) {
-
-	const (
-		dirPerm  os.FileMode = 0775
-		filePerm os.FileMode = 0664
-	)
-
-	// directories
-	directories := [2]string{
-		filepath.Join("karo-compose", "defaults", "main", cfg.StackGroup),
-		filepath.Join("karo-compose", "templates", cfg.StackGroup, cfg.StackName),
-	}
+func createDirs(cfg *config.Config, directories [2]string) {
 
 	// validate against existing stack group dirs
 	templatesPath := filepath.Join("karo-compose", "templates")

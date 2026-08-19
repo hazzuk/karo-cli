@@ -18,7 +18,6 @@ func main() {
 	cli.GetUserInput(cfg)
 	cli.ValidateInput(cfg)
 	lint.AssertCustomRepo(cfg)
-	generate.CreateDirs(cfg)
-	generate.CreateFiles(cfg)
+	generate.CreateComposeStack(cfg)
 
 }

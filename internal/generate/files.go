@@ -20,9 +20,9 @@ import (
 //go:embed templates/*
 var templates embed.FS
 
-func CreateFiles(cfg *config.Config) {
+func createFiles(cfg *config.Config, directories [2]string) {
 
-	// files
+	// declare file paths and related templates
 	files := [3]struct {
 		path     string
 		template string
@@ -78,13 +78,13 @@ func CreateFiles(cfg *config.Config) {
 		} else if file.path == files[0].path {
 			f.Close()
 			// edit existing main.yml file
-			editStackGroup(cfg, file.path, filePerm)
+			editStackGroup(cfg, file.path)
 		}
 	}
 
 }
 
-func editStackGroup(cfg *config.Config, path string, filePerm os.FileMode) {
+func editStackGroup(cfg *config.Config, path string) {
 
 	// read main.yml file
 	raw, err := os.ReadFile(path)
