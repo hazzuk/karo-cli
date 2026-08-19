@@ -9,10 +9,11 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/hazzuk/karo-cli/internal/config"
 	"github.com/hazzuk/karo-cli/internal/utils"
 )
 
-func AssertCustomRepo() {
+func AssertCustomRepo(cfg *config.Config) {
 
 	// get working directory path
 	path, err := os.Getwd()
@@ -24,7 +25,7 @@ func AssertCustomRepo() {
 	switch dirName {
 	case "karo-custom":
 		return
-	case stackGroupUser:
+	case cfg.StackGroupUser:
 		return
 	case "karo-cli":
 		return
@@ -32,7 +33,7 @@ func AssertCustomRepo() {
 
 	fmt.Printf(
 		"warn: non-standard name for current directory (%s), expected 'karo-custom' or '%s'\n",
-		dirName, stackGroupUser,
+		dirName, cfg.StackGroupUser,
 	)
 
 	// check karo-compose dir exists

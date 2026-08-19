@@ -15,10 +15,10 @@ func main() {
 
 	cfg := &config.Config{}
 
-	cli.GetUserInput()
-	cli.ValidateInput()
-	lint.AssertCustomRepo()
-	generate.CreateDirs()
-	generate.CreateFiles()
+	cli.GetUserInput(cfg)
+	cli.ValidateInput(cfg)
+	lint.AssertCustomRepo(cfg)
+	generate.CreateDirs(cfg)
+	generate.CreateFiles(cfg)
 
 }

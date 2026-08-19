@@ -10,10 +10,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/hazzuk/karo-cli/internal/config"
 	"github.com/hazzuk/karo-cli/internal/utils"
 )
 
-func CreateDirs() {
+func CreateDirs(cfg *config.Config) {
 
 	const (
 		dirPerm  os.FileMode = 0775
@@ -22,8 +23,8 @@ func CreateDirs() {
 
 	// directories
 	directories := [2]string{
-		filepath.Join("karo-compose", "defaults", "main", stackGroup),
-		filepath.Join("karo-compose", "templates", stackGroup, stackName),
+		filepath.Join("karo-compose", "defaults", "main", cfg.StackGroup),
+		filepath.Join("karo-compose", "templates", cfg.StackGroup, cfg.StackName),
 	}
 
 	// validate against existing stack group dirs
@@ -42,10 +43,10 @@ func CreateDirs() {
 				dirParts := strings.Split(dir.Name(), "_")
 
 				// ensure stack group usernames match
-				if stackGroupUser != dirParts[0] {
+				if cfg.StackGroupUser != dirParts[0] {
 					fmt.Printf(
 						"error: found mismatched stack groups (%s/%s)\n",
-						stackGroupUser, dirParts[0],
+						cfg.StackGroupUser, dirParts[0],
 					)
 					os.Exit(1)
 				}

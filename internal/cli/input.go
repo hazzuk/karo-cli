@@ -9,9 +9,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/hazzuk/karo-cli/internal/config"
 )
 
-func GetUserInput() {
+func GetUserInput(cfg *config.Config) {
 
 	// create flag sets
 	rootCmd := flag.NewFlagSet("karo", flag.ExitOnError)
@@ -19,7 +21,7 @@ func GetUserInput() {
 
 	// set flags
 	composeAddCmd.StringVar(
-		&stackLicense,
+		&cfg.StackLicense,
 		"license",
 		"NOASSERTION",
 		"SPDX license identifier",
@@ -91,8 +93,8 @@ func GetUserInput() {
 			}
 
 			// use args
-			stackGroup = parts[0]
-			stackName = parts[1]
+			cfg.StackGroup = parts[0]
+			cfg.StackName = parts[1]
 			return
 		}
 

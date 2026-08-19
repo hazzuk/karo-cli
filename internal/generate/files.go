@@ -13,13 +13,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/hazzuk/karo-cli/internal/config"
 	"github.com/hazzuk/karo-cli/internal/utils"
 )
 
 //go:embed templates/*
 var templates embed.FS
 
-func CreateFiles() {
+func CreateFiles(cfg *config.Config) {
 
 	// files
 	files := [3]struct {
@@ -31,7 +32,7 @@ func CreateFiles() {
 			template: "templates/main.yml.tmpl",
 		},
 		{
-			path:     filepath.Join(directories[0], stackName+".yml"),
+			path:     filepath.Join(directories[0], cfg.StackName+".yml"),
 			template: "templates/stack.yml.tmpl",
 		},
 		{
@@ -61,11 +62,11 @@ func CreateFiles() {
 				Year           int
 				StackLicense   string
 			}{
-				StackGroup:     stackGroup,
-				StackGroupUser: stackGroupUser,
-				StackName:      stackName,
+				StackGroup:     cfg.StackGroup,
+				StackGroupUser: cfg.StackGroupUser,
+				StackName:      cfg.StackName,
 				Year:           time.Now().Year(),
-				StackLicense:   stackLicense,
+				StackLicense:   cfg.StackLicense,
 			}
 
 			err = tmpl.Execute(f, data)
@@ -77,13 +78,13 @@ func CreateFiles() {
 		} else if file.path == files[0].path {
 			f.Close()
 			// edit existing main.yml file
-			editStackGroup(file.path, filePerm)
+			editStackGroup(cfg, file.path, filePerm)
 		}
 	}
 
 }
 
-func editStackGroup(path string, filePerm os.FileMode) {
+func editStackGroup(cfg *config.Config, path string, filePerm os.FileMode) {
 
 	// read main.yml file
 	raw, err := os.ReadFile(path)
@@ -91,7 +92,7 @@ func editStackGroup(path string, filePerm os.FileMode) {
 
 	content := string(raw)
 
-	stackGroupDict := stackGroup + "_stacks:"
+	stackGroupDict := cfg.StackGroup + "_stacks:"
 
 	// check for valid stack group dictionary
 	if !strings.Contains(content, stackGroupDict) {
@@ -103,7 +104,7 @@ func editStackGroup(path string, filePerm os.FileMode) {
 	}
 
 	// check for existing stack entry
-	if strings.Contains(content, "- "+stackName+"\n") {
+	if strings.Contains(content, "- "+cfg.StackName+"\n") {
 		return
 	}
 
@@ -111,7 +112,7 @@ func editStackGroup(path string, filePerm os.FileMode) {
 	content = strings.Replace(
 		content,
 		stackGroupDict,
-		stackGroupDict+"\n  # - "+stackName,
+		stackGroupDict+"\n  # - "+cfg.StackName,
 		1,
 	)
 

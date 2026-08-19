@@ -9,9 +9,11 @@ import (
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/hazzuk/karo-cli/internal/config"
 )
 
-func ValidateInput() {
+func ValidateInput(cfg *config.Config) {
 
 	const (
 		groupArgError     = "error: \033[33m" + "group" + "\033[0m"
@@ -21,17 +23,17 @@ func ValidateInput() {
 	)
 
 	// stack group/name required
-	if stackGroup == "" {
+	if cfg.StackGroup == "" {
 		fmt.Printf("%s %s\n", groupArgError, requiredError)
 		os.Exit(1)
 	}
-	if stackName == "" {
+	if cfg.StackName == "" {
 		fmt.Printf("%s %s\n", stackArgError, requiredError)
 		os.Exit(1)
 	}
 
 	// split stack group
-	stackGroupParts := strings.Split(stackGroup, "_")
+	stackGroupParts := strings.Split(cfg.StackGroup, "_")
 
 	// validate underscores
 	if len(stackGroupParts) != 2 {
@@ -43,27 +45,27 @@ func ValidateInput() {
 		os.Exit(1)
 	}
 
-	stackGroupUser = stackGroupParts[0]
-	stackGroupScope = stackGroupParts[1]
+	cfg.StackGroupUser = stackGroupParts[0]
+	cfg.StackGroupScope = stackGroupParts[1]
 
 	// validate alphanumeric & lowercase
 	alphanumeric := regexp.MustCompile(`^[a-z0-9]+$`)
 
-	if !alphanumeric.MatchString(stackGroupUser) {
+	if !alphanumeric.MatchString(cfg.StackGroupUser) {
 		fmt.Printf(
 			"%s username (%s) %s\n",
-			groupArgError, stackGroupUser, alphanumericError,
+			groupArgError, cfg.StackGroupUser, alphanumericError,
 		)
 		os.Exit(1)
 	}
-	if !alphanumeric.MatchString(stackGroupScope) {
+	if !alphanumeric.MatchString(cfg.StackGroupScope) {
 		fmt.Printf(
 			"%s scope (%s) %s\n",
-			groupArgError, stackGroupScope, alphanumericError,
+			groupArgError, cfg.StackGroupScope, alphanumericError,
 		)
 		os.Exit(1)
 	}
-	if !alphanumeric.MatchString(stackName) {
+	if !alphanumeric.MatchString(cfg.StackName) {
 		fmt.Printf("%s %s\n", stackArgError, alphanumericError)
 		os.Exit(1)
 	}
@@ -75,7 +77,7 @@ func ValidateInput() {
 	}
 
 	for _, scope := range reservedGroupScopes {
-		if strings.Contains(stackGroupScope, scope) {
+		if strings.Contains(cfg.StackGroupScope, scope) {
 			fmt.Printf(
 				"%s scope must not use word '%s'\n",
 				groupArgError, scope,
