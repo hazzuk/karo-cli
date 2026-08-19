@@ -5,9 +5,6 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/hazzuk/karo-cli/internal/cli"
 	"github.com/hazzuk/karo-cli/internal/generate"
 	"github.com/hazzuk/karo-cli/internal/lint"
@@ -28,14 +25,5 @@ func main() {
 	lint.AssertCustomRepo()
 	generate.CreateDirs()
 	generate.CreateFiles()
-
-}
-
-func check(err error) {
-
-	if err != nil {
-		fmt.Println("unexpected error: ", err)
-		os.Exit(1)
-	}
 
 }

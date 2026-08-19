@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/hazzuk/karo-cli/internal/utils"
 )
 
 //go:embed templates/*
@@ -41,16 +43,16 @@ func CreateFiles() {
 	for _, file := range files {
 		// create file
 		f, err := os.OpenFile(file.path, os.O_CREATE|os.O_WRONLY, filePerm)
-		check(err)
+		utils.Check(err)
 
 		// check file size
 		info, err := f.Stat()
-		check(err)
+		utils.Check(err)
 
 		if info.Size() == 0 {
 			// template empty file
 			tmpl, err := template.ParseFS(templates, file.template)
-			check(err)
+			utils.Check(err)
 
 			data := struct {
 				StackGroup     string
@@ -67,7 +69,7 @@ func CreateFiles() {
 			}
 
 			err = tmpl.Execute(f, data)
-			check(err)
+			utils.Check(err)
 
 			f.Close()
 			fmt.Println("info: created", file.path)
@@ -85,7 +87,7 @@ func editStackGroup(path string, filePerm os.FileMode) {
 
 	// read main.yml file
 	raw, err := os.ReadFile(path)
-	check(err)
+	utils.Check(err)
 
 	content := string(raw)
 
@@ -115,7 +117,7 @@ func editStackGroup(path string, filePerm os.FileMode) {
 
 	// write modified content to file
 	err = os.WriteFile(path, []byte(content), filePerm)
-	check(err)
+	utils.Check(err)
 
 	fmt.Println("info: edited", path)
 

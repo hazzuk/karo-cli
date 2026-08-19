@@ -9,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/hazzuk/karo-cli/internal/utils"
 )
 
 func CreateDirs() {
@@ -31,7 +33,7 @@ func CreateDirs() {
 	if stat, err := os.Stat(templatesPath); err == nil && stat.IsDir() {
 		// read templates dir
 		groupDirs, err := os.ReadDir(templatesPath)
-		check(err)
+		utils.Check(err)
 
 		// iterate templates sub-dirs
 		for _, dir := range groupDirs {
@@ -54,7 +56,7 @@ func CreateDirs() {
 	// create directories
 	for _, dir := range directories {
 		err := os.MkdirAll(dir, dirPerm)
-		check(err)
+		utils.Check(err)
 	}
 
 }

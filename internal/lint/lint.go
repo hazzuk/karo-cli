@@ -8,13 +8,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"github.com/hazzuk/karo-cli/internal/utils"
 )
 
 func AssertCustomRepo() {
 
 	// get working directory path
 	path, err := os.Getwd()
-	check(err)
+	utils.Check(err)
 
 	dirName := filepath.Base(path)
 
