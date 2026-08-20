@@ -1,9 +1,9 @@
 package config
 
 type Config struct {
-	StackGroup      string // username_scope
+	StackGroup      string // hazzuk_media
 	StackName       string // jellyfin
 	StackLicense    string // AGPL-3.0-only
-	StackGroupUser  string // username
-	StackGroupScope string // scope
+	StackGroupUser  string // hazzuk
+	StackGroupScope string // media
 }
