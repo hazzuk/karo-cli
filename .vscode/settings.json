@@ -12,6 +12,8 @@
         "NOASSERTION",
         "pipefail",
         "tmpl",
+        "uncommentable",
+        "uncopyrightable",
         "vars"
     ]
 }

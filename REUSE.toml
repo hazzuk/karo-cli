@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: © 2026 hazzuk
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
+# ---
+
+version = 1
+
+# https://reuse.software/spec/
+
+# reuse download --all
+# reuse lint
+
+# uncopyrightable files
+[[annotations]]
+path = [
+    ".gitignore",
+    ".vscode/*",
+    "go.mod",
+]
+SPDX-FileCopyrightText = "NONE"
+SPDX-License-Identifier = "CC0-1.0"
+
+# uncommentable files
+[[annotations]]
+path = [
+    "internal/generate/templates/*",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "© hazzuk"
+SPDX-License-Identifier = "AGPL-3.0-only"
