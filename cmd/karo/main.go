@@ -13,11 +13,17 @@ import (
 
 func main() {
 
+	// create config
 	cfg := &config.Config{}
 
+	// handle inputs
 	cli.GetUserInput(cfg)
 	cli.ValidateInput(cfg)
+
+	// run checks
 	lint.AssertCustomRepo(cfg)
+
+	// template files
 	generate.CreateComposeStack(cfg)
 
 }
