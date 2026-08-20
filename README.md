@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: © 2026 hazzuk
+
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 # karo-cli
 
 **A CLI tool for managing and validating [karo-custom](https://docs.karolabs.dev/custom) setups**
