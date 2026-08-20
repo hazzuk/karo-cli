@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: © 2026 hazzuk
+#
+# SPDX-License-Identifier: AGPL-3.0-only
+
 ---
 
 # https://pre-commit.com/
@@ -7,8 +11,23 @@
 # pre-commit run --all-files
 # pre-commit autoupdate
 
+default_stages: [pre-commit]
+default_install_hook_types: [pre-commit, commit-msg]
+
 repos:
+  # Licensing and copyright
   - repo: https://codeberg.org/fsfe/reuse-tool
     rev: v6.2.0
     hooks:
       - id: reuse-lint-file
+        name: "reuse: lint changed files"
+
+  # Spelling
+  - repo: https://github.com/streetsidesoftware/cspell-cli
+    rev: v10.0.1
+    hooks:
+      - id: cspell
+        name: "cspell: lint changed files"
+      - id: cspell
+        name: "cspell: lint commit message"
+        stages: [commit-msg]

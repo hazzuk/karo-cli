@@ -4,25 +4,24 @@
 
 # ---
 
-version = 1
-
 # https://reuse.software/spec/
 
 # reuse download --all
 # reuse lint
 
-# uncopyrightable files
+version = 1
+
+# Uncopyrightable files
 [[annotations]]
 path = [
     ".gitignore",
-    ".pre-commit-config.yaml",
-    ".vscode/*",
+    "cspell.json",
     "go.mod",
 ]
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
 
-# uncommentable files
+# Uncommentable files
 [[annotations]]
 path = [
     "internal/generate/templates/*",

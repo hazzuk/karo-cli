@@ -1,8 +1,10 @@
 {
-    "cSpell.enabled": true,
-    "cSpell.words": [
+    "language": "en-GB",
+    "enabled": true,
+    "words": [
         "GOARCH",
         "GOOS",
+        "hazzuk",
         "immich",
         "jellyfin",
         "justfile",
@@ -16,5 +18,9 @@
         "uncommentable",
         "uncopyrightable",
         "vars"
+    ],
+    "ignorePaths": [
+        "LICENSES/",
+        "LICENSE"
     ]
 }
