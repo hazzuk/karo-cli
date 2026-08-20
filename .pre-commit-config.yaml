@@ -1,0 +1,14 @@
+---
+
+# https://pre-commit.com/
+
+# pipx install pre-commit
+# pre-commit install
+# pre-commit run --all-files
+# pre-commit autoupdate
+
+repos:
+  - repo: https://codeberg.org/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse

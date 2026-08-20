@@ -15,6 +15,7 @@ version = 1
 [[annotations]]
 path = [
     ".gitignore",
+    ".pre-commit-config.yaml",
     ".vscode/*",
     "go.mod",
 ]
