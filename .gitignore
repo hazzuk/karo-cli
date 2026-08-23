@@ -1,2 +1,11 @@
+# editor
+.vscode/
+
+# generated files
 karo-compose/
+
+# builds
 dist/
+
+# misc
+.notes.md
