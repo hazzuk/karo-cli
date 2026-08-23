@@ -30,21 +30,22 @@ rev = "v6.2.0"
 hooks = [
   {
     id = "reuse-lint-file",
-    name = "reuse: lint changed files"
+    name = "reuse: lint files"
   }
 ]
 
 [[repos]]
-repo = "https://github.com/streetsidesoftware/cspell-cli"
-rev = "v10.0.1"
+repo = "https://github.com/crate-ci/typos"
+rev = "v1.49.0"
 hooks = [
   {
-    id = "cspell",
-    name = "cspell: lint changed files"
+    id = "typos",
+    name = "typos: lint files"
   },
   {
-    id = "cspell",
-    name = "cspell: lint commit message",
+    id = "typos",
+    name = "typos: lint commit message",
+    args = ["--force-exclude"],
     stages = ["commit-msg"]
   }
 ]
