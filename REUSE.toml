@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 
-# Configuration file for `reuse`, a tool for compliance with the REUSE spec.
+# Configuration file for `reuse`, a compliance tool for the REUSE spec.
 # See https://reuse.software/spec for more information.
 
 version = 1
