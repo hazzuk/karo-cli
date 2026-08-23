@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 # karo-cli
 
-**A CLI tool for managing and validating [karo-custom](https://docs.karolabs.dev/custom) setups**
+**A CLI tool for generating and linting [karo-custom](https://docs.karolabs.dev/custom) setups**
 
 [![GitHub Release](https://img.shields.io/github/v/release/hazzuk/karo-cli?display_name=tag&cacheSeconds=7200)](https://github.com/hazzuk/karo-cli/releases)
 [![License](https://img.shields.io/badge/license-AGPL--3.0-orange)](https://github.com/hazzuk/karo-cli/blob/main/LICENSE)
