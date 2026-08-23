@@ -13,6 +13,18 @@ default_install_hook_types = [
 ]
 
 [[repos]]
+repo = "builtin"
+hooks = [
+  { id = "trailing-whitespace" },
+  { id = "check-added-large-files" },
+  { id = "end-of-file-fixer" },
+  { id = "check-json" },
+  { id = "check-toml" },
+  { id = "check-yaml" },
+  { id = "mixed-line-ending", args = ["--fix=lf"] },
+]
+
+[[repos]]
 repo = "https://codeberg.org/fsfe/reuse-tool"
 rev = "v6.2.0"
 hooks = [
