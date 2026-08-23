@@ -10,9 +10,9 @@ version = 1
 # Uncopyrightable files
 [[annotations]]
 path = [
-    ".gitignore",
-    "cspell.json",
-    "go.mod",
+  ".gitignore",
+  "cspell.json",
+  "go.mod",
 ]
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
@@ -20,7 +20,7 @@ SPDX-License-Identifier = "CC0-1.0"
 # Uncommentable files
 [[annotations]]
 path = [
-    "internal/generate/templates/*",
+  "internal/generate/templates/*",
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "© hazzuk"
