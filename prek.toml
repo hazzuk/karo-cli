@@ -6,6 +6,10 @@
 # See https://prek.j178.dev for more information.
 #:schema https://www.schemastore.org/prek.json
 
+# Commands:
+# - `prek install`  Install prek Git hook shims
+# - `prek -a`       Run hooks on all tracked files
+
 default_stages = ["pre-commit"]
 default_install_hook_types = [
   "pre-commit",
