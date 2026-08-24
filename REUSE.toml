@@ -15,7 +15,6 @@ version = 1
 [[annotations]]
 path = [
   ".gitignore",
-  "cspell.json",
   "go.mod",
 ]
 SPDX-FileCopyrightText = "NONE"
