@@ -5,9 +5,12 @@
 # justfile, for running project-specific commands.
 # See https://just.systems/man/en for more information.
 
-# Print help
+set minimum-version := '1.55.0'
+set default-list := true
+
+# List recipes
 help:
-    @{{ just_executable() }} --list --unsorted --list-prefix "  - " --justfile "{{ justfile() }}"
+    @{{ just_executable() }}
 
 # Compile current platform
 [group('Compile')]
