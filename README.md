@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 [![License](https://img.shields.io/badge/license-AGPL--3.0-B461B3.svg)](https://github.com/hazzuk/karo-cli/blob/main/LICENSE)
 [![Hits-of-Code](https://hitsofcode.com/github/hazzuk/karo-cli)](https://hitsofcode.com/github/hazzuk/karo-cli/view)
 
-[![Developed by Humans, Not by AI](https://docs.karolabs.dev/assets/images/not-by-ai.png)](https://notbyai.fyi/)
+[![Developed by Humans, Not by AI](https://hazzuk.github.io/assets/not-by-ai/dev.svg)](https://notbyai.fyi/)
 
 </div>
 
