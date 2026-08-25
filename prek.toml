@@ -10,6 +10,8 @@
 # - `prek install`  Install prek Git hook shims
 # - `prek -a`       Run hooks on all tracked files
 
+exclude = { glob = ["LICENSE", "LICENSES/*"] }
+
 default_stages = ["pre-commit"]
 default_install_hook_types = [
   "pre-commit",
@@ -26,6 +28,16 @@ hooks = [
   { id = "check-toml" },
   { id = "check-yaml" },
   { id = "mixed-line-ending", args = ["--fix=lf"] },
+]
+
+[[repos]]
+repo = "https://github.com/editorconfig-checker/editorconfig-checker"
+rev = "v3.11.1"
+hooks = [
+  {
+    id = "editorconfig-checker",
+    name = "editorconfig: lint files",
+  }
 ]
 
 [[repos]]
