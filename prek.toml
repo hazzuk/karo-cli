@@ -15,7 +15,7 @@ exclude = { glob = ["LICENSE", "LICENSES/*"] }
 default_stages = ["pre-commit"]
 default_install_hook_types = [
   "pre-commit",
-  "commit-msg"
+  "commit-msg",
 ]
 
 [[repos]]
@@ -46,7 +46,7 @@ rev = "v6.2.0"
 hooks = [
   {
     id = "reuse-lint-file",
-    name = "reuse: lint files"
+    name = "reuse: lint files",
   }
 ]
 
@@ -56,12 +56,12 @@ rev = "v1.49.0"
 hooks = [
   {
     id = "typos",
-    name = "typos: lint files"
+    name = "typos: lint files",
   },
   {
     id = "typos",
     name = "typos: lint commit message",
     args = ["--force-exclude"],
-    stages = ["commit-msg"]
+    stages = ["commit-msg"],
   }
 ]
